@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_transform_map">
+    <sys_transform_map action="DELETE">
+        <active>true</active>
+        <copy_empty_fields>false</copy_empty_fields>
+        <create_new_record_on_empty_coalesce_fields>false</create_new_record_on_empty_coalesce_fields>
+        <enforce_mandatory_fields>All Fields</enforce_mandatory_fields>
+        <name>Import Historic NeedIt Data</name>
+        <order>100</order>
+        <run_business_rules>false</run_business_rules>
+        <run_script>true</run_script>
+        <script><![CDATA[// If the source data does not have a u_requested_for_email field, 
+  // create the target email address from the Requested for value.  Email addresses 
+  // have the format firstname.lastname@example.com.  Convert the u_requested_for 
+  // value to lowercase.  Replace the space with a . and concatenate with 
+  // @example.com
+  if(!("u_requested_for_email" in source)){
+    var name = source.u_requested_for.toLowerCase();
+    target.u_requested_for_email = name.replace(" ", ".") + "@example.com";
+  }
+//   answer = (function transformEntry(source) {
+//   // Remplace u_when_needed par le nom de la colonne dans ta table d'import si différent
+//   var valeur = (source.u_when_needed + '').trim();
+
+//   if (!valeur || valeur == 'undefined') {
+//     return '';
+//   }
+
+//   var parties = valeur.split('/');
+//   if (parties.length != 3) {
+//     gs.warn('Date non reconnue dans l\'import : ' + valeur);
+//     return '';
+//   }
+
+//   var mois = parseInt(parties[0], 10);
+//   var jour = parseInt(parties[1], 10);
+//   var annee = parseInt(parties[2], 10);
+
+//   if (isNaN(mois) || isNaN(jour) || isNaN(annee)) {
+//     gs.warn('Date non reconnue dans l\'import : ' + valeur);
+//     return '';
+//   }
+
+//   // 17 devient 2017
+//   if (annee < 100) {
+//     annee += 2000;
+//   }
+
+//   function deuxChiffres(n) {
+//     return (n < 10 ? '0' : '') + n;
+//   }
+
+//   // Format attendu par le Field Map : MM-dd-yyyy
+//   return deuxChiffres(mois) + '-' + deuxChiffres(jour) + '-' + annee;
+// })(source);
+(function transformEntry(source, target) {
+   var dateStr = (source.u_when_needed + '').trim();
+
+   if (!dateStr || dateStr == 'undefined') {
+      return;
+   }
+
+   var parts = dateStr.split("/");
+   if (parts.length !== 3) {
+      gs.warn('Date non reconnue : ' + dateStr);
+      return;
+   }
+
+   var month = ('0' + parts[0]).slice(-2);
+   var day = ('0' + parts[1]).slice(-2);
+   var year = parts[2];
+   if (year.length === 2) {
+      year = "20" + year;
+   }
+
+   var gdt = new GlideDateTime();
+   gdt.setValue(year + '-' + month + '-' + day + ' 00:00:00');
+   target.u_when_needed = gdt;
+})(source, target);]]></script>
+        <source_table>u_historic_needit_data</source_table>
+        <sys_class_name>sys_transform_map</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-01 13:25:08</sys_created_on>
+        <sys_id>fe1e646353eb0310c789f7e0a0490e83</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Import Historic NeedIt Data</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_update_name>sys_transform_map_fe1e646353eb0310c789f7e0a0490e83</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-05 12:15:25</sys_updated_on>
+        <target_table>x_58872_needit_needit</target_table>
+    </sys_transform_map>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</application>
+        <file_path/>
+        <instance_id>4bb4ed08dbf2fdd439639027c596191c</instance_id>
+        <instance_name>dev223297</instance_name>
+        <merge_base/>
+        <name>sys_transform_map_fe1e646353eb0310c789f7e0a0490e83</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_transform_map"&gt;&lt;sys_transform_map action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;copy_empty_fields&gt;false&lt;/copy_empty_fields&gt;&lt;create_new_record_on_empty_coalesce_fields&gt;false&lt;/create_new_record_on_empty_coalesce_fields&gt;&lt;enforce_mandatory_fields&gt;All Fields&lt;/enforce_mandatory_fields&gt;&lt;name&gt;Import Historic NeedIt Data&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;run_business_rules&gt;false&lt;/run_business_rules&gt;&lt;run_script&gt;true&lt;/run_script&gt;&lt;script&gt;&lt;![CDATA[// If the source data does not have a u_requested_for_email field, 
+  // create the target email address from the Requested for value.  Email addresses 
+  // have the format firstname.lastname@example.com.  Convert the u_requested_for 
+  // value to lowercase.  Replace the space with a . and concatenate with 
+  // @example.com
+  if(!("u_requested_for_email" in source)){
+    var name = source.u_requested_for.toLowerCase();
+    target.u_requested_for_email = name.replace(" ", ".") + "@example.com";
+  }
+//   answer = (function transformEntry(source) {
+//   // Remplace u_when_needed par le nom de la colonne dans ta table d'import si différent
+//   var valeur = (source.u_when_needed + '').trim();
+
+//   if (!valeur || valeur == 'undefined') {
+//     return '';
+//   }
+
+//   var parties = valeur.split('/');
+//   if (parties.length != 3) {
+//     gs.warn('Date non reconnue dans l\'import : ' + valeur);
+//     return '';
+//   }
+
+//   var mois = parseInt(parties[0], 10);
+//   var jour = parseInt(parties[1], 10);
+//   var annee = parseInt(parties[2], 10);
+
+//   if (isNaN(mois) || isNaN(jour) || isNaN(annee)) {
+//     gs.warn('Date non reconnue dans l\'import : ' + valeur);
+//     return '';
+//   }
+
+//   // 17 devient 2017
+//   if (annee &lt; 100) {
+//     annee += 2000;
+//   }
+
+//   function deuxChiffres(n) {
+//     return (n &lt; 10 ? '0' : '') + n;
+//   }
+
+//   // Format attendu par le Field Map : MM-dd-yyyy
+//   return deuxChiffres(mois) + '-' + deuxChiffres(jour) + '-' + annee;
+// })(source);
+(function transformEntry(source, target) {
+   var dateStr = (source.u_when_needed + '').trim();
+
+   if (!dateStr || dateStr == 'undefined') {
+      return;
+   }
+
+   var parts = dateStr.split("/");
+   if (parts.length !== 3) {
+      gs.warn('Date non reconnue : ' + dateStr);
+      return;
+   }
+
+   var month = ('0' + parts[0]).slice(-2);
+   var day = ('0' + parts[1]).slice(-2);
+   var year = parts[2];
+   if (year.length === 2) {
+      year = "20" + year;
+   }
+
+   var gdt = new GlideDateTime();
+   gdt.setValue(year + '-' + month + '-' + day + ' 00:00:00');
+   target.u_when_needed = gdt;
+})(source, target);]]&gt;&lt;/script&gt;&lt;source_table&gt;u_historic_needit_data&lt;/source_table&gt;&lt;sys_class_name&gt;sys_transform_map&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2026-10-01 13:25:08&lt;/sys_created_on&gt;&lt;sys_id&gt;fe1e646353eb0310c789f7e0a0490e83&lt;/sys_id&gt;&lt;sys_mod_count&gt;9&lt;/sys_mod_count&gt;&lt;sys_name&gt;Import Historic NeedIt Data&lt;/sys_name&gt;&lt;sys_package display_value="NeedIt" source="x_58872_needit"&gt;6ead8e780f603200cd674f8ce1050ed1&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="NeedIt"&gt;6ead8e780f603200cd674f8ce1050ed1&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_transform_map_fe1e646353eb0310c789f7e0a0490e83&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2026-10-05 12:15:25&lt;/sys_updated_on&gt;&lt;target_table&gt;x_58872_needit_needit&lt;/target_table&gt;&lt;/sys_transform_map&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-649692515</payload_hash>
+        <record_name>Import Historic NeedIt Data</record_name>
+        <reverted_from/>
+        <source>17553fc753e3c714c789f7e0a0490ea4</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-05 12:15:26</sys_created_on>
+        <sys_id>7d77c53053b30f10c789f7e0a0490ef0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1a10bfd832c0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-05 12:15:26</sys_updated_on>
+        <type>Table Transform Map</type>
+        <update_guid>b977c53037b30f1038f1146fc84a6cef</update_guid>
+        <update_guid_history>b977c53037b30f1038f1146fc84a6cef:-649692515,efc64d3c9d730f102cff4d68f30e8a51:1595441844,b7c5893ce3730f10fd258d6e3192bc9d:-462679389,bbe181f0c1730f10c3fd2302ecf67ef3:-1203608721,28f0cd307f730f10f7c151b61d7794f5:456065352,40bca4b064bfcb1027d41e80026e0477:2074451361,985768b4f07fcb10aebc501cabf1299b:-681372125,666441ebc5234310c0ca46a9340be779:31003609,1e3470abd56f031065830b199217dd8b:-1437501002,f7017c6340eb03103d0519a580de2ce4:1032927677</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-10-05 14:15:25</sys_created_on>
+        <sys_db_object display_value="" name="sys_transform_map">sys_transform_map</sys_db_object>
+        <sys_id>1f1364ef339648bf810ff0b10bf06d61</sys_id>
+        <sys_metadata>fe1e646353eb0310c789f7e0a0490e83</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Import Historic NeedIt Data</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_scope_delete display_value="">94872a8897db403e8ee69a431de2fca4</sys_scope_delete>
+        <sys_update_name>sys_transform_map_fe1e646353eb0310c789f7e0a0490e83</sys_update_name>
+        <sys_update_version display_value="sys_transform_map_fe1e646353eb0310c789f7e0a0490e83">7d77c53053b30f10c789f7e0a0490ef0</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-10-05 14:15:25</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
